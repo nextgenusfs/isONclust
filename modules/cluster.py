@@ -292,7 +292,7 @@ def reads_to_clusters(clusters, representatives, sorted_reads, p_emp_probs, mini
             # indices.append(len(seq) - 1)
             # qualcomp = ''.join([qual[i] for i in indices])
             # assert len(seq_hpol_comp) == len(qualcomp)
-            all_read_hpol_lengths = [len([c for c in g]) for ch, g in itertools.groupby(seq)]
+            all_read_hpol_lengths = [len([c for c in g]) for ch, g in itertools.groupby(seq_hpol_comp)]
             # print(all_read_hpol_lengths)
             qualcomp = []
             start = 0
