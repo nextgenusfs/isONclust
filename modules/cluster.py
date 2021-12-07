@@ -288,27 +288,30 @@ def reads_to_clusters(clusters, representatives, sorted_reads, p_emp_probs, mini
             t = tuple(lst)
             representatives[read_cl_id] =  t # just updated batch index
         else:
-            # indices = [i for i, (n1,n2) in enumerate(zip(seq[:-1],seq[1:])) if n1 != n2] # indicies we want to take quality values from to get quality string of homopolymer compressed read 
-            # indices.append(len(seq) - 1)
-            # qualcomp = ''.join([qual[i] for i in indices])
-            # assert len(seq_hpol_comp) == len(qualcomp)
-            all_read_hpol_lengths = [len([c for c in g]) for ch, g in itertools.groupby(seq_hpol_comp)]
-            # print(all_read_hpol_lengths)
-            qualcomp = []
-            start = 0
-            for h_len in all_read_hpol_lengths:
-                q_max = min(qual[start: start + h_len], key = lambda x: phred_char_to_p[x])
-                qualcomp.append(q_max)
-                # if h_len > 2:
-                #     print(qual[start: start + h_len], q_max)
-                start += h_len
-            qualcomp = "".join([q for q in qualcomp])
-            assert len(seq_hpol_comp) == len(qualcomp)
-            # print(qualcomp)
-            # assert len(qualcomp) == len(qualcomp2)
-            # print(qualcomp)
-            # print(qualcomp2)
-            # print()
+            if args.compression:
+                # indices = [i for i, (n1,n2) in enumerate(zip(seq[:-1],seq[1:])) if n1 != n2] # indicies we want to take quality values from to get quality string of homopolymer compressed read 
+                # indices.append(len(seq) - 1)
+                # qualcomp = ''.join([qual[i] for i in indices])
+                # assert len(seq_hpol_comp) == len(qualcomp)
+                all_read_hpol_lengths = [len([c for c in g]) for ch, g in itertools.groupby(seq)]
+                # print(all_read_hpol_lengths)
+                qualcomp = []
+                start = 0
+                for h_len in all_read_hpol_lengths:
+                    q_max = min(qual[start: start + h_len], key = lambda x: phred_char_to_p[x])
+                    qualcomp.append(q_max)
+                    # if h_len > 2:
+                    #     print(qual[start: start + h_len], q_max)
+                    start += h_len
+                qualcomp = "".join([q for q in qualcomp])
+                assert len(seq_hpol_comp) == len(qualcomp)
+                # print(qualcomp)
+                # assert len(qualcomp) == len(qualcomp2)
+                # print(qualcomp)
+                # print(qualcomp2)
+                # print()
+            else:  # I think we just need the original qualities here
+                qualcomp = qual
 
             # compute the average error rate after compression
             poisson_mean = sum([ qualcomp.count(char_) * phred_char_to_p[char_] for char_ in set(qualcomp)])
@@ -323,7 +326,12 @@ def reads_to_clusters(clusters, representatives, sorted_reads, p_emp_probs, mini
         
         # 4. Finds the best of the hits using mapping approach
 
-        best_cluster_id_m, nr_shared_kmers_m, mapped_ratio = get_best_cluster(read_cl_id, len(seq_hpol_comp), hit_clusters_ids, hit_clusters_hit_positions, minimizers, len(minimizers), hit_clusters_hit_index, representatives, p_emp_probs, args)
+        best_cluster_id_m, nr_shared_kmers_m, mapped_ratio = get_best_cluster(read_cl_id, len(
+        
+        
+        
+        
+        ), hit_clusters_ids, hit_clusters_hit_positions, minimizers, len(minimizers), hit_clusters_hit_index, representatives, p_emp_probs, args)
         
         
         # 5. If step 4 is unsuccessfull we try to align the read to the representative(s) with the most shared minimizers.
