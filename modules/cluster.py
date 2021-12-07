@@ -270,8 +270,11 @@ def reads_to_clusters(clusters, representatives, sorted_reads, p_emp_probs, mini
         ################################################################################
 
         # 1. homopolymenr compress read and obtain minimizers
-
-        seq_hpol_comp = ''.join(ch for ch, _ in itertools.groupby(seq))
+        if args.compression:
+            seq_hpol_comp = ''.join(ch for ch, _ in itertools.groupby(seq))
+        else:
+            seq_hpol_comp = seq
+            
         if len(seq_hpol_comp) < args.k:
             print( "skipping read of length:", len(seq), "homopolymer compressed:", len(seq_hpol_comp), seq)
             continue 
