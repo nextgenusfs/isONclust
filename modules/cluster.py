@@ -326,12 +326,7 @@ def reads_to_clusters(clusters, representatives, sorted_reads, p_emp_probs, mini
         
         # 4. Finds the best of the hits using mapping approach
 
-        best_cluster_id_m, nr_shared_kmers_m, mapped_ratio = get_best_cluster(read_cl_id, len(
-        
-        
-        
-        
-        ), hit_clusters_ids, hit_clusters_hit_positions, minimizers, len(minimizers), hit_clusters_hit_index, representatives, p_emp_probs, args)
+        best_cluster_id_m, nr_shared_kmers_m, mapped_ratio = get_best_cluster(read_cl_id, len(seq_hpol_comp), hit_clusters_ids, hit_clusters_hit_positions, minimizers, len(minimizers), hit_clusters_hit_index, representatives, p_emp_probs, args)
         
         
         # 5. If step 4 is unsuccessfull we try to align the read to the representative(s) with the most shared minimizers.
